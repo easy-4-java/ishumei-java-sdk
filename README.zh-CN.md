@@ -4,6 +4,8 @@
 
 [![Java](https://img.shields.io/badge/Java-8-orange)](https://github.com/easy-4-java/ishumei-java-sdk) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
+ishumei-java-sdk 为数美（Shumei）反欺诈与内容审核 API 提供类型化的 Java 模型层。
+
 > **项目状态**：`feature/1.0.x` 版本线早期开发中。制品尚未发布到 Maven Central，通过项目私服与 GitHub Releases 分发。
 
 ## 目录
