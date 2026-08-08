@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
+ * Copyright (c) 2018-present, easy-4-java (https://github.com/easy-4-java).
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ishumei.spring.boot.model;
 
@@ -20,87 +20,131 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+/**
+ * Common user-context fields shared by every anti-fraud payload
+ * (text, image and video).
+ *
+ * <p>All properties are optional but the Ishumei scoring engine
+ * performs significantly better when more context is provided. In
+ * particular {@code tokenId}, {@code ip} and {@code deviceId} form
+ * the canonical trio used for cross-channel user behaviour analysis.
+ * Lombok's {@link Data} generates the standard accessors and
+ * mutators; null properties are excluded from the serialised JSON
+ * payload.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see AntiFraudTextRequestData
+ * @see AntiFraudImageRequestData
+ * @see AntiFraudVideoRequestData
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 public class AntiFraudRequestData {
 
 	/**
-	 * 客户端用户唯一标识，用于用户行为分析，建 议传入用户 UID 注：不同用户务必传入不同的 tokenId 对其进 行唯一标识
+	 * Globally-unique identifier of the end-user. It is <strong>strongly
+	 * recommended</strong> to pass the application-side UID &mdash; different
+	 * users must use distinct {@code tokenId} values so that behaviour
+	 * analytics and blacklist lookups behave correctly.
 	 */
 	@JsonProperty("tokenId")
 	private String tokenId;
 
 	/**
-	 * 数据场景，取值需要与数美协商
+	 * Business scenario label negotiated with Ishumei. Different channels
+	 * route through different risk models.
 	 */
 	@JsonProperty("channel")
 	private String channel;
 
 	/**
-	 * 客户端IP;该参数用于IP维度的用户行为分析
+	 * Client IP address. Used for IP-based user behaviour analysis and to
+	 * correlate requests with IP-level blacklists.
 	 */
 	@JsonProperty("ip")
 	private String ip;
 
 	/**
-	 * 用户手机号；可用于比对数美手机号黑库
+	 * End-user mobile phone number. May be cross-referenced against
+	 * Ishumei's phone-number blacklist.
 	 */
 	@JsonProperty("phone")
 	private String phone;
 
 	/**
-	 * 强烈建议传入；数美设备指纹标识，用于用户行为分析；当恶意用户篡改mac、imei等设备信息时；使用deviceId能够发现和识别此类恶意行为，同时可用于比对数美设备指纹黑名单
+	 * <strong>Strongly recommended.</strong> Ishumei device-fingerprint
+	 * identifier. Persists across MAC / IMEI tampering and lets the
+	 * platform associate malicious users that rotate device metadata.
 	 */
 	@JsonProperty("deviceId")
 	private String deviceId;
 
 	/**
-	 * 客户端IP;该参数用于IP维度的用户行为分析
+	 * Client IP address used for receiving-token correlation. Mirrors
+	 * {@link #ip} but lets the upstream gateway reuse a token received
+	 * from another channel.
 	 */
 	@JsonProperty("receiveTokenId")
 	private String receiveTokenId;
 
 	/**
-	 *用户等级；针对不同等级的用户可配置不同拦截策略
+	 * User tier / grade. Different grades can be configured with
+	 * different interception strategies (for example, VIP users may
+	 * tolerate higher risk scores).
 	 */
 	@JsonProperty("level")
 	private String level;
 
 	/**
-	 * 帐号注册时间; 强烈建议传递此参数，新注册帐号的异常操作风险较高
+	 * Account registration timestamp. <strong>Strongly recommended</strong>
+	 * because brand-new accounts present a meaningfully higher
+	 * risk profile.
 	 */
 	@JsonProperty("registerTime")
 	private String registerTime;
 
 	/**
-	 * 帐号好友数; 社交场景强烈推荐传此参数，标识用户质量
+	 * Number of friends / contacts of the account. Social scenarios
+	 * are encouraged to provide this metric as an indicator of user
+	 * quality.
 	 */
 	@JsonProperty("friendNum")
 	private String friendNum;
 
 	/**
-	 * 帐号粉丝数; 直播/社区场景强烈推荐传此参数，标识用户质量
+	 * Number of followers of the account. Live-streaming and
+	 * community scenarios are encouraged to provide this metric as
+	 * an indicator of user quality.
 	 */
 	@JsonProperty("fansNum")
 	private String fansNum;
 
 	/**
-	 * 用户角色; 对不同角色可配置不同策略。 直播领域可取值： 房管：ADMIN、 主播：HOST、 系统角色：SYSTEM； 游戏领域可取值：
-	 * 管理员：ADMIN、 普通用户：USER； 缺失或者默认普通用户：USER
+	 * User role. Different roles can be tied to different interception
+	 * strategies. Notable values include
+	 * <ul>
+	 *     <li>{@code ADMIN} &mdash; moderator / administrator,</li>
+	 *     <li>{@code HOST} &mdash; live-stream host,</li>
+	 *     <li>{@code SYSTEM} &mdash; system role,</li>
+	 *     <li>{@code USER} &mdash; ordinary user (default).</li>
+	 * </ul>
 	 */
 	@JsonProperty("role")
 	private String role = "USER";
 
 	/**
-	 * 讨论的话题编号； 可为书评区编号、论坛帖子编号
+	 * Topic / thread identifier under discussion (for example, a
+	 * book-review area or forum post id).
 	 */
 	@JsonProperty("topic")
 	private String topic;
 
 	/**
-	 * 是否为优质（如付费）用户；配置不同等级，标识用户质量，可能取值：优质账号：1、默认值：0
+	 * Whether the account is premium (paid). Possible values are
+	 * {@code 1} (premium) and {@code 0} (default / non-premium).
 	 */
 	@JsonProperty("isPremiumUser")
 	private int isPremiumUser = 0;
-	
+
 }
