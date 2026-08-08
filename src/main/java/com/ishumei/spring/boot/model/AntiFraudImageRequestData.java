@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2018, Loong Wan (https://github.com/loong10k).
+ * Copyright (c) 2018-present, easy-4-java (https://github.com/easy-4-java).
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.ishumei.spring.boot.model;
 
@@ -23,75 +23,107 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Image-specific payload for the synchronous anti-fraud endpoint.
+ *
+ * <p>Carries either a single image ({@link #img}) or a batch of
+ * images ({@link #imgs}, max 100 entries), together with the
+ * device-fingerprint identifiers that improve scoring accuracy.
+ * Supported formats include {@code jpg}, {@code jpeg}, {@code jp2},
+ * {@code png}, {@code webp}, {@code gif}, {@code bmp}, {@code tiff},
+ * {@code tif}, {@code dib}, {@code ppm}, {@code pgm}, {@code pbm},
+ * {@code hdr} and {@code pic}; an image resolution of at least
+ * 256&times;256 pixels is recommended.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see AntiFraudImageRequest
+ * @see AntiFraudImageRequestItem
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AntiFraudImageRequestData extends AntiFraudRequestData {
 
 	/**
-	 * 要检测的图片； 可使用图片的base64编码或者图片的url链接；
-	 * 支持格式：jpg，jpeg，jp2，png，webp，gif，bmp，tiff，tif，dib，ppm，pgm，pbm，hdr，pic；
-	 * 建议图片像素不小于256*256
+	 * Single image to be inspected. May be either the base-64
+	 * encoding of the image bytes or a URL pointing to a hosted
+	 * image. Supported formats are listed at the class level.
 	 */
 	@JsonProperty("img")
 	private String img;
-	
+
 	/**
-	 * 要检测的图片数组，要求数组长度在 100 以内； 可使用图片的base64编码或者图片的url链接；
-	 * 支持格式：jpg，jpeg，jp2，png，webp，gif，bmp，tiff，tif，dib，ppm，pgm，pbm，hdr，pic；
-	 * 建议图片像素不小于256*256
+	 * Batch of images to be inspected. The list must contain at most
+	 * 100 entries; each entry follows the format documented at
+	 * {@link AntiFraudImageRequestItem}.
 	 */
 	@JsonProperty("imgs")
 	private List<AntiFraudImageRequestItem> imgs;
 
 	/**
-	 * 用户指定的图片标识；当callback存在时，在回调请求中向用户返回；不支持特殊字符
+	 * Caller-specified image identifier. Echoed back in the callback
+	 * request when a callback URL has been configured. Special
+	 * characters are not allowed.
 	 */
 	@JsonProperty("btId")
 	private String btId;
 
 	/**
-	 * 用户的性别，可选值：女性：0，男性：1
+	 * End-user gender. Possible values are {@code 0} (female) and
+	 * {@code 1} (male).
 	 */
 	@JsonProperty("sex")
 	private int sex;
 
 	/**
-	 * 用户的年龄，可选值：青年（大约18-45岁）：0、中年（大约45-60岁）：1、老年（大于60岁）：2
+	 * End-user age bucket. Possible values are
+	 * {@code 0} (youth, ~18&ndash;45),
+	 * {@code 1} (middle-aged, ~45&ndash;60) and
+	 * {@code 2} (senior, &gt;60).
 	 */
 	@JsonProperty("age")
 	private int age = 0;
 
 	/**
-	 * 用户android设备唯一标识；相比tokenId和IP，imei和mac更难被更换，当恶意用户使用多个不同账户和IP进作恶时，通过imei和mac能够有效关联识别此类恶意行为，同时可用于比对数美设备黑名单
+	 * Android device identifier. IMEI / MAC survive multiple
+	 * accounts and IP rotations, which makes them highly effective
+	 * for tying malicious behaviour back to a single physical
+	 * device &mdash; they can also be matched against Ishumei's
+	 * device blacklist.
 	 */
 	@JsonProperty("imei")
 	private String imei;
 
-	/**
-	 */
+	/** MAC address of the device. Mirrors the behaviour of {@link #imei}. */
 	@JsonProperty("mac")
 	private String mac;
 
 	/**
-	 * 用户iOS应用唯一标识，相比tokenId和IP，idfv不能被修改，当恶意用户使用多个不同账户和IP进行恶意行为时，使用idfv能够发现和识别此类恶意行为
+	 * iOS application identifier. Unlike {@code tokenId} or IP,
+	 * {@code idfv} cannot be modified by the user and is therefore
+	 * a strong correlation signal.
 	 */
 	@JsonProperty("idfv")
 	private String idfv;
 
-	/**
-	 */
+	/** iOS advertising identifier. Mirrors the behaviour of {@link #idfv}. */
 	@JsonProperty("idfa")
 	private String idfa;
 
 	/**
-	 * 最大截帧数量;GIF图检测专用，默认值为20;当interval*maxFrame小于该图片所包含的图片数量时，截帧间隔会自动修改为该图片所包含的图片数/maxFrame，以提高整体检测效果
+	 * Maximum number of frames sampled from a GIF animation. Defaults
+	 * to {@code 20}. When {@code interval * maxFrame} is smaller than
+	 * the actual frame count, the interval is automatically widened
+	 * to {@code frameCount / maxFrame}.
 	 */
 	@JsonProperty("maxFrame")
 	private int maxFrame = 20;
 
 	/**
-	 * 截帧频率;GIF图检测专用，默认值为1;每interval张图片抽取一张进行检测
+	 * Sampling interval for GIF inspection &mdash; every
+	 * {@code interval}-th frame is fed to the model. Defaults to
+	 * {@code 1} (inspect every frame).
 	 */
 	@JsonProperty("interval")
 	private int interval = 1;
