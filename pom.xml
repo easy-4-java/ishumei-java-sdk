@@ -3,6 +3,7 @@
 <groupId>io.github.hiwepy</groupId><artifactId>ishumei-java-sdk</artifactId><version>1.0.0-SNAPSHOT</version><packaging>jar</packaging>
 <properties>
         <java.version>1.8</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Dependency versions -->
