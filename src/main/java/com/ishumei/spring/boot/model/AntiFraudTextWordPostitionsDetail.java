@@ -29,7 +29,7 @@ import lombok.Data;
  * where the hit was found, allowing callers to highlight the
  * offending span inside the original input.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudTextRequestData
  */

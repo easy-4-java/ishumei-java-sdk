@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
  * exceed 1 MB; larger payloads should be migrated to the asynchronous
  * batch endpoint.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudRequest
  * @see AntiFraudImageRequestData

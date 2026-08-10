@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
  * scoring engine adapt the policy. The text is capped at 20 000
  * characters.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudTextRequest
  */

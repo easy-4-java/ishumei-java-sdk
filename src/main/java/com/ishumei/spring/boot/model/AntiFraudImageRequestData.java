@@ -35,7 +35,7 @@ import lombok.EqualsAndHashCode;
  * {@code hdr} and {@code pic}; an image resolution of at least
  * 256&times;256 pixels is recommended.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudImageRequest
  * @see AntiFraudImageRequestItem

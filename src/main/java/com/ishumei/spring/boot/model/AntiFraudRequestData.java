@@ -32,7 +32,7 @@ import lombok.Data;
  * mutators; null properties are excluded from the serialised JSON
  * payload.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudTextRequestData
  * @see AntiFraudImageRequestData

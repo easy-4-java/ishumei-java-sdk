@@ -32,7 +32,7 @@ import lombok.Data;
  * passed and errored counts) that lets the caller quickly surface
  * batch-level KPIs without iterating through the per-image list.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see BatchAntiFraudImageItem
  */

@@ -41,7 +41,7 @@ import lombok.Data;
  * that need to inspect details should re-parse the string with
  * Jackson.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudImageResponse
  * @see AntiFraudVideoResponse

@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
  * specific to the text endpoint. The serialized JSON body should
  * not exceed 1 MB.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudRequest
  * @see AntiFraudTextRequestData

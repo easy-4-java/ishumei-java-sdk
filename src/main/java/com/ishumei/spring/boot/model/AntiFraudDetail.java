@@ -32,7 +32,7 @@ import lombok.EqualsAndHashCode;
  * keeps the equality contract local (the parent class does not
  * participate) which simplifies JSON round-tripping.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudResponse
  */

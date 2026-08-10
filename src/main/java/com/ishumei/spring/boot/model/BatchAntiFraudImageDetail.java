@@ -31,7 +31,7 @@ import lombok.EqualsAndHashCode;
  * batch endpoint &mdash; a token-level score that summarises the
  * behaviour across the entire batch for a single user.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see BatchAntiFraudImageResponse
  * @see AntiFraudImageDetail

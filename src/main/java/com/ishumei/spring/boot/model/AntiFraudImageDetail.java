@@ -35,7 +35,7 @@ import java.util.List;
  * which is why {@link JsonInclude.Include#NON_NULL} is configured at
  * the class level.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudImageResponse
  * @see AntiFraudImageDetailHits

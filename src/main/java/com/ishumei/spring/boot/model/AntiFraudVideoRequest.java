@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
  * platform returns a {@code taskId} that the caller polls (or
  * receives via the configured callback) for the final verdict.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see AntiFraudRequest
  * @see AntiFraudVideoRequestData
