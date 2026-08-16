@@ -22,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Unit tests for {@link AntiFraudRequestData}.
@@ -102,7 +103,7 @@ class AntiFraudRequestDataTest {
 
 	@Test
 	void shouldSerialiseToJsonWithDefaultValues() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new JsonMapper();
 		AntiFraudRequestData data = new AntiFraudRequestData();
 		data.setTokenId("uid");
 		data.setRole("ADMIN");
@@ -116,7 +117,7 @@ class AntiFraudRequestDataTest {
 
 	@Test
 	void shouldDeserialiseFromJson() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new JsonMapper();
 		String json = "{\"tokenId\":\"u\",\"channel\":\"ch\",\"role\":\"HOST\",\"isPremiumUser\":1}";
 
 		AntiFraudRequestData data = mapper.readValue(json, AntiFraudRequestData.class);
@@ -128,7 +129,7 @@ class AntiFraudRequestDataTest {
 
 	@Test
 	void shouldIgnoreUnknownJsonProperties() throws Exception {
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = new JsonMapper();
 		// AntiFraudRequestData does NOT carry @JsonIgnoreProperties,
 		// so unknown fields cause an exception. Verify this behavior.
 		String json = "{\"tokenId\":\"u\",\"unknown\":42}";
@@ -137,7 +138,7 @@ class AntiFraudRequestDataTest {
 			mapper.readValue(json, AntiFraudRequestData.class);
 			// If no exception is thrown, the class must have been annotated
 			// with @JsonIgnoreProperties at some point — still acceptable.
-		} catch (com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException e) {
+		} catch (tools.jackson.databind.exc.UnrecognizedPropertyException e) {
 			// Expected: the class does not ignore unknown properties.
 			assertNotNull(e.getMessage());
 		}
