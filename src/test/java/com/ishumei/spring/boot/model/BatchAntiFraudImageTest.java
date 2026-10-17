@@ -138,7 +138,7 @@ class BatchAntiFraudImageTest {
             hit.setScore(500);
             d.setHits(List.of(hit));
             assertEquals(1, d.getHits().size());
-            assertEquals(500, d.getHits().getFirst().getScore());
+            assertEquals(500, d.getHits().get(0).getScore());
         }
 
         @Test
