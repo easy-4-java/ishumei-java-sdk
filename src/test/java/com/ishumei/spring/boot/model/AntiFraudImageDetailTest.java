@@ -141,7 +141,7 @@ class AntiFraudImageDetailTest {
         AntiFraudImageDetail d = new AntiFraudImageDetail();
         AntiFraudImageDetailHits hit = new AntiFraudImageDetailHits();
         hit.setScore(500);
-        d.setHits(List.of(hit));
+        d.setHits(java.util.Arrays.asList(hit));
         assertEquals(1, d.getHits().size());
         assertEquals(500, d.getHits().get(0).getScore());
     }
