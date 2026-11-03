@@ -53,16 +53,16 @@ ishumei-java-sdk 为数美（Shumei）反欺诈与内容审核 API 提供类型�
 | 视频反欺诈请求模型 | 已实现 | `AntiFraudVideoRequest` + `AntiFraudVideoRequestData` |
 | 带风险语义的响应模型 | 已实现 | `AntiFraudResponse`、`AntiFraudImageResponse`、`BatchAntiFraudImageResponse`、`AntiFraudVideoResponse` |
 | 风险详情/命中模型 | 已实现 | `AntiFraudDetail`、`AntiFraudImageDetail`、`AntiFraudImageDetailHits`、`BatchAntiFraudImageItem` |
-| HTTP 传输客户端 | 未实现 | pom 已声明 OkHttp 4.9.3，但本分支尚无客户端类 |
-| 单元测试 | 暂无 | pom 已配置 JaCoCo 90% 行覆盖率门禁（不阻断构建） |
+| HTTP 传输客户端 | 未实现 | pom 已声明 OkHttp 4.12.0，但本分支尚无客户端类 |
+| 单元测试 | 当前 CI 运行 228 个 JUnit 测试 | JaCoCo 对计入统计的源码行执行 90% 覆盖率门禁 |
 
 ## 3. 环境要求与兼容性
 
 | 项目 | 要求 |
 | :--- | :--- |
 | JDK | 21+ |
-| Maven | 3.0+（内置 Maven Wrapper `mvnw`） |
-| 依赖 | okhttp 4.9.3、jackson-databind 2.17.2、slf4j-api 2.0.18、lombok（provided） |
+| Maven | 4.0.0-rc-5（内置 Maven Wrapper `mvnw`） |
+| 依赖 | okhttp 4.12.0、jackson-databind 3.2.4、slf4j-api 2.0.18、lombok（provided） |
 
 版本线：
 
@@ -120,7 +120,7 @@ implementation 'io.github.easy4j:ishumei-java-sdk:3.0.x.x.20260630-SNAPSHOT'
 构建文本审核请求并序列化为 JSON：
 
 ```java
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.ishumei.spring.boot.model.AntiFraudTextRequest;
 import com.ishumei.spring.boot.model.AntiFraudTextRequestData;
 
@@ -133,7 +133,7 @@ data.setText("hello world");
 data.setNickname("tester");
 request.setData(data);
 
-String json = new ObjectMapper().writeValueAsString(request);
+String json = JsonMapper.builder().build().writeValueAsString(request);
 ```
 
 预期输出（字段顺序与模型声明顺序一致）：
@@ -156,7 +156,7 @@ String json = new ObjectMapper().writeValueAsString(request);
 ```java
 import com.ishumei.spring.boot.model.AntiFraudResponse;
 
-AntiFraudResponse response = new ObjectMapper().readValue(apiBody, AntiFraudResponse.class);
+AntiFraudResponse response = JsonMapper.builder().build().readValue(apiBody, AntiFraudResponse.class);
 
 boolean success = response.isSuccess();  // status == 0 && code == "1100"
 boolean pass    = response.isPass();     // success && riskLevel == "PASS"
@@ -187,11 +187,11 @@ request.getData().getImgs().add(new AntiFraudImageRequestItem()); // 每个条�
 
 构建配置：
 
-- JaCoCo 覆盖率报告 + 行覆盖率检查规则，最低目标 90%（`haltOnFailure=false`，只报告不阻断）；
+- JaCoCo 覆盖率报告与阻断构建的 90% 行覆盖率检查（`haltOnFailure=true`）；
 - package 阶段附加源码包与 Javadoc 包；
 - 提供 `central` 发布 profile（GPG 签名 + Central 发布插件），仅用于正式发布。
 
-说明：本分支当前没有测试源码，覆盖率门禁暂无数据可校验。
+当前 CI 报告计入统计的 12 行源码全部覆盖（12/12，100%）。Lombok 生成的方法不在此分母中，不能据此认定 SDK 全部行为已覆盖。
 
 ## 10. 版本与分支
 

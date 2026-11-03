@@ -54,15 +54,15 @@ Typical scenarios:
 | Response models with risk semantics | Implemented | `AntiFraudResponse`, `AntiFraudImageResponse`, `BatchAntiFraudImageResponse`, `AntiFraudVideoResponse` |
 | Risk detail / hit models | Implemented | `AntiFraudDetail`, `AntiFraudImageDetail`, `AntiFraudImageDetailHits`, `BatchAntiFraudImageItem` |
 | HTTP transport client | Not yet implemented | OkHttp 4.9.3 is declared in the pom; no client class exists in this branch yet |
-| Unit tests | Not yet present | JaCoCo 90% line-coverage gate is configured in the pom (non-failing) |
+| Unit tests | 228 JUnit tests in the current CI run | JaCoCo enforces a 90% line-coverage threshold on its measured source lines |
 
 ## 3. Requirements & Compatibility
 
 | Item | Requirement |
 | :--- | :--- |
 | JDK | 21+ |
-| Maven | 3.0+ (Maven Wrapper `mvnw` is included) |
-| Dependencies | okhttp 4.9.3, jackson-databind 2.17.2, slf4j-api 2.0.18, lombok (provided) |
+| Maven | 4.0.0-rc-5 (Maven Wrapper `mvnw` is included) |
+| Dependencies | okhttp 4.12.0, jackson-databind 3.2.4, slf4j-api 2.0.18, lombok (provided) |
 
 Version lines:
 
@@ -120,7 +120,7 @@ The snapshot is served from the project's private repository; make sure the repo
 Build a text-moderation request and serialize it to JSON:
 
 ```java
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import com.ishumei.spring.boot.model.AntiFraudTextRequest;
 import com.ishumei.spring.boot.model.AntiFraudTextRequestData;
 
@@ -133,7 +133,7 @@ data.setText("hello world");
 data.setNickname("tester");
 request.setData(data);
 
-String json = new ObjectMapper().writeValueAsString(request);
+String json = JsonMapper.builder().build().writeValueAsString(request);
 ```
 
 Expected output (field order follows the model declaration):
@@ -156,7 +156,7 @@ Interpreting a Shumei risk response:
 ```java
 import com.ishumei.spring.boot.model.AntiFraudResponse;
 
-AntiFraudResponse response = new ObjectMapper().readValue(apiBody, AntiFraudResponse.class);
+AntiFraudResponse response = JsonMapper.builder().build().readValue(apiBody, AntiFraudResponse.class);
 
 boolean success = response.isSuccess();  // status == 0 && code == "1100"
 boolean pass    = response.isPass();     // success && riskLevel == "PASS"
@@ -187,11 +187,11 @@ request.getData().getImgs().add(new AntiFraudImageRequestItem()); // img / token
 
 The build is configured with:
 
-- JaCoCo coverage reporting plus a line-coverage check rule with a 90% minimum target (`haltOnFailure=false`, so the check reports rather than blocks).
+- JaCoCo coverage reporting and a blocking 90% line-coverage check (`haltOnFailure=true`).
 - Source and Javadoc jars attached at package time.
 - A `central` release profile (GPG signing + Central publishing) reserved for official releases.
 
-Note: this branch currently contains no test sources, so the coverage gate has nothing to measure yet.
+The current CI report counts 12 of 12 instrumented source lines as covered (100%). Lombok-generated methods are outside that denominator, so this ratio does not mean every SDK behavior is covered.
 
 ## 10. Versioning & Branches
 
