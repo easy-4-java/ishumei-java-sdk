@@ -54,7 +54,7 @@ Typical scenarios:
 | Response models with risk semantics | Implemented | `AntiFraudResponse`, `AntiFraudImageResponse`, `BatchAntiFraudImageResponse`, `AntiFraudVideoResponse` |
 | Risk detail / hit models | Implemented | `AntiFraudDetail`, `AntiFraudImageDetail`, `AntiFraudImageDetailHits`, `BatchAntiFraudImageItem` |
 | HTTP transport client | Not yet implemented | OkHttp 4.9.3 is declared in the pom; no client class exists in this branch yet |
-| Unit tests | Not yet present | JaCoCo 90% line-coverage gate is configured in the pom (non-failing) |
+| Unit tests | 228 JUnit tests in the current CI run | JaCoCo enforces a 90% line-coverage threshold on its measured source lines |
 
 ## 3. Requirements & Compatibility
 
@@ -187,11 +187,11 @@ request.getData().getImgs().add(new AntiFraudImageRequestItem()); // img / token
 
 The build is configured with:
 
-- JaCoCo coverage reporting plus a line-coverage check rule with a 90% minimum target (`haltOnFailure=false`, so the check reports rather than blocks).
+- JaCoCo coverage reporting and a blocking 90% line-coverage check (`haltOnFailure=true`).
 - Source and Javadoc jars attached at package time.
 - A `central` release profile (GPG signing + Central publishing) reserved for official releases.
 
-Note: this branch currently contains no test sources, so the coverage gate has nothing to measure yet.
+The current CI report counts 12 of 12 instrumented source lines as covered (100%). Lombok-generated methods are outside that denominator, so this ratio does not mean every SDK behavior is covered.
 
 ## 10. Versioning & Branches
 
