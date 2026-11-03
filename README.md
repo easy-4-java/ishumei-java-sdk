@@ -61,8 +61,8 @@ Typical scenarios:
 | Item | Requirement |
 | :--- | :--- |
 | JDK | 21+ |
-| Maven | 3.0+ (Maven Wrapper `mvnw` is included) |
-| Dependencies | okhttp 4.9.3, jackson-databind 2.17.2, slf4j-api 2.0.18, lombok (provided) |
+| Maven | 4.0.0-rc-5 (Maven Wrapper `mvnw` is included) |
+| Dependencies | okhttp 4.12.0, jackson-databind 3.2.4, slf4j-api 2.0.18, lombok (provided) |
 
 Version lines:
 
