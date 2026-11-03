@@ -115,7 +115,7 @@ class AntiFraudImageRequestTest {
         AntiFraudImageRequestData d = new AntiFraudImageRequestData();
         AntiFraudImageRequestItem item = new AntiFraudImageRequestItem();
         item.setImg("base64...");
-        d.setImgs(List.of(item));
+        d.setImgs(java.util.Arrays.asList(item));
         assertEquals(1, d.getImgs().size());
     }
 
