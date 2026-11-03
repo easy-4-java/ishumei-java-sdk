@@ -136,9 +136,9 @@ class BatchAntiFraudImageTest {
             BatchAntiFraudImageDetail d = new BatchAntiFraudImageDetail();
             BatchAntiFraudImageDetailHits hit = new BatchAntiFraudImageDetailHits();
             hit.setScore(500);
-            d.setHits(List.of(hit));
+            d.setHits(java.util.Arrays.asList(hit));
             assertEquals(1, d.getHits().size());
-            assertEquals(500, d.getHits().getFirst().getScore());
+            assertEquals(500, d.getHits().get(0).getScore());
         }
 
         @Test
@@ -448,7 +448,7 @@ class BatchAntiFraudImageTest {
             BatchAntiFraudImageResponse r = new BatchAntiFraudImageResponse();
             BatchAntiFraudImageItem item = new BatchAntiFraudImageItem();
             item.setCode("1100");
-            r.setImgs(List.of(item));
+            r.setImgs(java.util.Arrays.asList(item));
             assertEquals(1, r.getImgs().size());
         }
 
@@ -456,7 +456,7 @@ class BatchAntiFraudImageTest {
         @DisplayName("shouldSetAndGetStatistics")
         void shouldSetAndGetStatistics() {
             BatchAntiFraudImageResponse r = new BatchAntiFraudImageResponse();
-            r.setStatistics(List.of(1, 2, 3, 4));
+            r.setStatistics(java.util.Arrays.asList(1, 2, 3, 4));
             assertEquals(4, r.getStatistics().size());
             assertEquals(1, r.getStatistics().get(0));
             assertEquals(4, r.getStatistics().get(3));
